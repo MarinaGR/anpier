@@ -53,8 +53,7 @@ function onDeviceReady()
 	}
 	
 	
-	// TEST NOTIFICACIONES
-	/*
+	// TEST NOTIFICACIONES	
 	var current_url=window.location.href;
 	var opcion_notif=getLocalStorage("notificacion");
 	var first_exec=getSessionStorage("first_time");
@@ -73,12 +72,7 @@ function onDeviceReady()
 	cordova.plugins.notification.local.on("click", function (notification, state) {
 		 
 		 var datos=$.parseJSON(notification.data);
-		
-		//  $("body").append("NOTIF: <br>");
-		// $.each(notification, function(i, k) {
-		//	 $("body").append(i+": " + k + "<br>");
-		// });
-		 	 
+ 	 
 		 var tipo=(notification.title).split(/\[(.*?)\]/);
 		 switch(tipo[1])
 		 {
@@ -97,7 +91,7 @@ function onDeviceReady()
 		 }
 		
 	},this);	
-	*/
+	
 					
 	check_internet();
 	 
