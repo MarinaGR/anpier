@@ -405,7 +405,7 @@ function onMenuKeyDown()
 				'</a>'
 				
 				/*QUITAR FORZAR NOTIF*/
-				/*+'<a href="#" onclick="forzar_envio_notificacion(\'testpush/\');">'+
+				+'<a href="#" onclick="forzar_envio_notificacion(\'testpush/\');">'+
 					'<div class="button_float_nav">'+
 						'FORZAR NOTIF PUSH'+
 					'</div>'+
