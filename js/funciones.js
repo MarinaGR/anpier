@@ -330,7 +330,7 @@ function tokenHandler (result) {
 
 function successHandler (result) {
 	$("body").append('Exito: '+result);
-	registerOnServer(e.regid);
+	registerOnServer(result);
 }
 
 function errorHandler (error) {
@@ -1592,7 +1592,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
 					importeTotalSuma=importeTotalSuma.toFixed(2);
 					
-					cadena+="<div class='datos_retribucion_04'><span>Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
 						
 					cadena+="<div style='text-align:center'>";
 					
@@ -1754,7 +1754,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
 					importeTotalSuma=importeTotalSuma.toFixed(2);
 					
-					cadena+="<div class='datos_retribucion_04'><span>Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
 					
 					cadena+="<div style='text-align:center'><h2>A&Ntilde;O "+fecha_calendario[0]+"</div>";
 					
