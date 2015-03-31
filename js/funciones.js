@@ -52,8 +52,12 @@ function onDeviceReady()
 		document.getElementById("boton_salir").addEventListener("click", onBackKeyDown, false);	
 	}
 	
+	/* ************************************************************************ */
+	/* Comentar desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES  */
+	/* para no realizar el registro del dispositivo							    */
+	/* ************************************************************************ */
 	
-	// TEST NOTIFICACIONES	
+	// INICIO TEST NOTIFICACIONES	
 	var current_url=window.location.href;
 	var opcion_notif=getLocalStorage("notificacion");
 	var first_exec=getSessionStorage("first_time");
@@ -68,6 +72,7 @@ function onDeviceReady()
 			}
 		}
 	}
+	// FIN TEST NOTIFICACIONES	
 	
 	cordova.plugins.notification.local.on("click", function (notification, state) {
 		 
@@ -244,23 +249,21 @@ function onNotification(e) {
 						/*var date_notif=notif.date;
 						if(date_notif!="" && date_notif!=null)
 							date_notif=new Date();*/
-						var date_notif=new Date();
 						
 						if(notif.notId!="")
 							id_notificacion=notif.notId;		
-
-						var icono="res/icon/icon.png";
 						
 						window.plugin.notification.local.add({
 							id:      id_notificacion,
-							date:    date_notif, 
+							//date:    date_notif, 
 							title:   "["+notif.tipo+"] "+notif.title,
 							message: notif.message,
 							data:	 notif.data,
-							icon:    icono,
 							ongoing:    true,
 							autoCancel: true
 						});		
+						
+						$("body").append('<br>Id: '+id_notificacion);
 						
 						if(notif.notId=="")
 							id_notificacion++;						
@@ -335,7 +338,6 @@ function tokenHandler (result) {
 
 function successHandler (result) {
 	$("body").append('Exito: '+result);
-	registerOnServer(result);
 }
 
 function errorHandler (error) {
@@ -427,6 +429,7 @@ function onMenuKeyDown()
 	$('#menu_flotante').toggle('drop'); 
 	$('#cortina').toggle();
 }
+
 /*QUITAR FORZAR NOTIF*/
 function forzar_envio_notificacion(tipo)
 {
