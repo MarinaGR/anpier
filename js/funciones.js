@@ -76,6 +76,12 @@ function onDeviceReady()
 	
 	cordova.plugins.notification.local.on("click", function (notification, state) {
 		 
+		cordova.plugins.notification.local.getTriggered(function (notifications) {
+			$.each(notifications, function(ind,notif) {
+				alert(notif.title+" "+notif.id);
+			});
+		});
+		 
 		 var datos=$.parseJSON(notification.data);
  	 
 		 var tipo=(notification.title).split(/\[(.*?)\]/);
@@ -250,8 +256,8 @@ function onNotification(e) {
 						if(date_notif!="" && date_notif!=null)
 							date_notif=new Date();*/
 						
-						if(notif.notId!="")
-							id_notificacion=notif.notId;		
+						//if(notif.notId!="")
+						//	id_notificacion=notif.notId;		
 						
 						window.plugin.notification.local.add({
 							id:      id_notificacion,
@@ -262,11 +268,8 @@ function onNotification(e) {
 							ongoing:    true,
 							autoCancel: true
 						});		
-						
-						$("body").append('<br>Id: '+id_notificacion);
-						
-						if(notif.notId=="")
-							id_notificacion++;						
+
+						id_notificacion++;						
 											
 					}
 					else
@@ -308,40 +311,32 @@ function registerOnServer(registrationId) {
 			},
 		dataType: 'json',
 		crossDomain: true, 
-        success: function() {
-          
-					$("body").append('<br>Listo para notificaciones');
-					$("body").append('<br>regID: '+registrationId+"<br>");
-						
-					setSessionStorage("regID", registrationId);
-					
-			},
+        success: function() {          	
+					setSessionStorage("regID", registrationId);					
+				},
         error: function(jqXHR) {
 					if(jqXHR.status == 200) {
-						$("body").append('<br>Listo para notificaciones');
-						$("body").append('<br>regID: '+registrationId+"<br>");
-							
+						$("body").append('<br>Listo para notificaciones');		
 						setSessionStorage("regID", registrationId);
 					}	
 					if(jqXHR.status == 500) {
 						$("body").append('<br>El dispositivo no se pudo registrar para recibir notificaciones.');
 					}	
-		}
+				}
 		
     });
 }
 function tokenHandler (result) {
 	$("body").append('<br>Listo para notificaciones');
-	$("body").append('<br>Token: '+result);
 	registerOnServer(result);
 }
 
 function successHandler (result) {
-	$("body").append('Exito: '+result);
+	//$("body").append('Exito: '+result);
 }
 
 function errorHandler (error) {
-	$("body").append('Error: '+error);
+	//$("body").append('Error: '+error);
 } 
 
 function onBackKeyDown()
@@ -2292,7 +2287,7 @@ function getSessionStorage(keyoutput)
 function show_notification(msg)  
 {
 	/*window.plugin.notification.local.add({
-		id:         String,  // A unique id of the notifiction
+		id:         String,  // A unique id of the notification
 		date:       Date,    // This expects a date object
 		message:    String,  // The message that is displayed
 		title:      String,  // The title of the message
