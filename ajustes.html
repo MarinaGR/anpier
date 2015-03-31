@@ -103,9 +103,15 @@
 							Notificaciones
 						</div>
 
-						<div class="tabs" onclick="show_tab(this,'change_passw')">
-							Contraseña
-						</div>
+						<span id="tab_passw"> </span>
+						<script>
+						if(getLocalStorage("premium")==FLAG_PREMIUM || getLocalStorage("premium")==FLAG_PREMIUMPLUS) {
+							$("#tab_passw").html('<div class="tabs" id="tab_passw" onclick="show_tab(this,\'change_passw\')">'+
+													'Contraseña'+
+												 '</div>'); 
+						}
+						</script>
+						
 					</div>
 					
 					<div class="iframes" id="notif" style="width:100%;height:400px;display:block" >
@@ -133,6 +139,12 @@
 						<div id="loading"> </div>
 						
 					</div>
+					
+					<script>
+					if(getLocalStorage("premium")==FLAG_NORMAL) {
+						$("#change_passw").html(''); 
+					}
+					</script>
 					
 				</div>
 				<div class="clear_01"> </div>
