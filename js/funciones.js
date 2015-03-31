@@ -1592,6 +1592,11 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeRo=parseFloat(data.ImporteRo).toFixed(2);
 					var importeRm=parseFloat(data.ImporteRm).toFixed(2);
 					
+					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
+					importeTotalSuma=importeTotalSuma.toFixed(2);
+					
+					cadena+="<div class='datos_retribucion_04'><spanDatos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+						
 					cadena+="<div style='text-align:center'>";
 					
 					cadena+='<select class="select_02" id="mes_retribucion" name="MES" >';
@@ -1630,8 +1635,6 @@ function ajax_recover_leco(operation, values, container, type) {
 					{
 						cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh</span></div>";
 					}
-					
-					cadena+="<p>Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</p>";
 							
 					cadena+="<div class='datos_retribucion_02'>Rinv<br><span class='rinv'>"+importeRinv+" &euro;</span></div>"+
 							"<div class='datos_retribucion_02'>Ro<br><span class='ro'>"+importeRo+" &euro;</span></div>"+
@@ -1639,7 +1642,7 @@ function ajax_recover_leco(operation, values, container, type) {
 							
 					cadena+="<div class='clear_03'> </div>";
 					
-					cadena+="<div class='datos_retribucion_02'>Retribuci&oacute;n mensual total a percibir<br>"+importeRinv+importeRo+importeRm+" &euro;</div>";
+					cadena+="<div class='datos_retribucion_01'>Retribuci&oacute;n mensual total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
 							
 					cadena+="<div class='clear_03'> </div>";
 							
