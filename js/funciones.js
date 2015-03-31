@@ -75,13 +75,7 @@ function onDeviceReady()
 	// FIN TEST NOTIFICACIONES	
 	
 	cordova.plugins.notification.local.on("click", function (notification, state) {
-		 
-		cordova.plugins.notification.local.getTriggered(function (notifications) {
-			$.each(notifications, function(ind,notif) {
-				alert(notif.title+" "+notif.id);
-			});
-		});
-		 
+		 		 
 		 var datos=$.parseJSON(notification.data);
  	 
 		 var tipo=(notification.title).split(/\[(.*?)\]/);
@@ -2200,6 +2194,7 @@ function ajax_recover_leco(operation, values, container, type) {
 	
 		if(jqXHR.status == 404) {
 			$("#"+container).html("No hay informaci&oacute;n");
+			return;
 		}
 		else if(jqXHR.status == 401) {
 			$("#"+container).html("No tiene autorizaci&oacute;n para ver esta secci&oacute;n. Si ha cambiado de contrase&ntilde;a recientemente, por favor cierre sesi&oacute;n y vuelva a conectarse con la nueva contrase&ntilde;a. Disculpe las molestias.");
@@ -2212,6 +2207,7 @@ function ajax_recover_leco(operation, values, container, type) {
 		else
 		{
 			$("#"+container).html("Necesita tener conexi&oacute;n a internet para acceder a esta secci&oacute;n.");
+			return;
 		}
 	}
 		 
