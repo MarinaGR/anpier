@@ -103,12 +103,13 @@
 							Notificaciones
 						</div>
 
-						<span id="tab_passw"> </span>
+						<div class="tabs" id="tab_passw" onclick="show_tab(this,'change_passw')">
+							Contraseña
+						</div>
 						<script>
-						if(getLocalStorage("premium")==FLAG_PREMIUM || getLocalStorage("premium")==FLAG_PREMIUMPLUS) {
-							$("#tab_passw").html('<div class="tabs" id="tab_passw" onclick="show_tab(this,\'change_passw\')">'+
-													'Contraseña'+
-												 '</div>'); 
+						if(getLocalStorage("premium")==FLAG_NORMAL) {
+							$("#tab_passw").attr('onclick',''); 
+							$("#tab_passw").html(''); 
 						}
 						</script>
 						

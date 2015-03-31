@@ -425,7 +425,7 @@ function forzar_envio_notificacion(tipo)
 	var regID=getSessionStorage("regID");
 	if(typeof regID == "undefined" || regID==null || regID=="")
 	{
-		alert("No register");
+		alert("Notificaciones desactivadas");
 		return false;
 	}
 
