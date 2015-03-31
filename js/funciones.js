@@ -305,7 +305,7 @@ function registerOnServer(registrationId) {
 			},
 		dataType: 'json',
 		crossDomain: true, 
-        success: function(jqXHR) {
+        success: function() {
           
 					$("body").append('<br>Listo para notificaciones');
 					$("body").append('<br>regID: '+registrationId+"<br>");
@@ -314,7 +314,12 @@ function registerOnServer(registrationId) {
 					
 			},
         error: function(jqXHR) {
-		
+					if(jqXHR.status == 200) {
+						$("body").append('<br>Listo para notificaciones');
+						$("body").append('<br>regID: '+registrationId+"<br>");
+							
+						setSessionStorage("regID", registrationId);
+					}	
 					if(jqXHR.status == 500) {
 						$("body").append('<br>El dispositivo no se pudo registrar para recibir notificaciones.');
 					}	
