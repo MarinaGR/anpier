@@ -373,6 +373,12 @@ a.button_nav {
 	font-size: 0.9em;
 	margin: 5px 0;
 }
+.datos_retribucion_06
+{
+	color: #999;
+	font-size: 0.75em;
+	margin: 3px 0;
+}
 .datos_retribucion_01 span, .datos_retribucion_02 span, .datos_retribucion_03 span, .datos_retribucion_04 span{
 	color: #666;
 	font-size: 0.8em;

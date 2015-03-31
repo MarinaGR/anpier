@@ -310,6 +310,9 @@ function registerOnServer(registrationId) {
 					if(jqXHR.status == 200) {
 						$("body").append('<br>Listo para notificaciones');
 						$("body").append('<br>regID: '+registrationId+"<br>");
+						
+						setSessionStorage("regID", registrationId);
+
 					}
 			
 			},
@@ -425,7 +428,14 @@ function onMenuKeyDown()
 /*QUITAR FORZAR NOTIF*/
 function forzar_envio_notificacion(tipo)
 {
-	var regID="APA91bECvWY-y0PZO0I1P5HIUrEGu1M-wzStaKbl_esOabcq6P2WzoC7dnRTUuBHhyOL_fLT4yVRwBdIbLOF_sMUKw1xolORLiOZ02Fi7MMCEUHAuDOZvcZlWj7Fp6roxn3aTMfd6s-Ltl_BGzhtg6-lqKzeSoA4TQ";
+	//var regID="APA91bECvWY-y0PZO0I1P5HIUrEGu1M-wzStaKbl_esOabcq6P2WzoC7dnRTUuBHhyOL_fLT4yVRwBdIbLOF_sMUKw1xolORLiOZ02Fi7MMCEUHAuDOZvcZlWj7Fp6roxn3aTMfd6s-Ltl_BGzhtg6-lqKzeSoA4TQ";
+	
+	var regID=getSessionStorage("regID");
+	if(typeof regID == "undefined" || regID==null || regID=="")
+	{
+		alert("No register");
+		return false;
+	}
 
 	var api_key=getLocalStorage("api-key");
 	var mail=getLocalStorage("user_session");
@@ -1583,6 +1593,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeRm=parseFloat(data.ImporteRm).toFixed(2);
 					
 					cadena+="<div style='text-align:center'>";
+					
 					cadena+='<select class="select_02" id="mes_retribucion" name="MES" >';
 					for(i=0;i<monthNames.length;i++)
 					{
@@ -1613,16 +1624,22 @@ function ajax_recover_leco(operation, values, container, type) {
 					if(data.Perdidas!=null && data.Perdidas>0)
 					{
 						cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh<br>"+
-								"<span class='datos_retribucion_05'>(Aplicadas p&eacute;rdidas de transformaci&oacute;n)</span></span></div>";
+								"<span class='datos_retribucion_06'>(Aplicadas p&eacute;rdidas de transformaci&oacute;n)</span></span></div>";
 					}
 					else
 					{
 						cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh</span></div>";
 					}
+					
+					cadena+="<p>Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</p>";
 							
 					cadena+="<div class='datos_retribucion_02'>Rinv<br><span class='rinv'>"+importeRinv+" &euro;</span></div>"+
 							"<div class='datos_retribucion_02'>Ro<br><span class='ro'>"+importeRo+" &euro;</span></div>"+
 							"<div class='datos_retribucion_02'>Rm<br><span class='rm'>"+importeRm+" &euro;</span></div>";	
+							
+					cadena+="<div class='clear_03'> </div>";
+					
+					cadena+="<div class='datos_retribucion_02'>Retribuci&oacute;n mensual total a percibir<br>"+importeRinv+importeRo+importeRm+" &euro;</div>";
 							
 					cadena+="<div class='clear_03'> </div>";
 							
@@ -1706,6 +1723,7 @@ function ajax_recover_leco(operation, values, container, type) {
 										responsive: true,
 										segmentStrokeWidth : 0,
 										animationSteps : 60,
+										tooltipTemplate: "<%=label%>: <%= value.toFixed(2) %>",
 										animationEasing : "linear",
 									});
 									
