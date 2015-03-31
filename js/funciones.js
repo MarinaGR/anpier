@@ -307,14 +307,11 @@ function registerOnServer(registrationId) {
 		crossDomain: true, 
         success: function(jqXHR) {
           
-					if(jqXHR.status == 200) {
-						$("body").append('<br>Listo para notificaciones');
-						$("body").append('<br>regID: '+registrationId+"<br>");
+					$("body").append('<br>Listo para notificaciones');
+					$("body").append('<br>regID: '+registrationId+"<br>");
 						
-						setSessionStorage("regID", registrationId);
-
-					}
-			
+					setSessionStorage("regID", registrationId);
+					
 			},
         error: function(jqXHR) {
 		
@@ -1619,8 +1616,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					}
 					cadena+="</select>";
 					
-					cadena+="<input type='button' class='input_01' value='VER ACUMULADO A&Ntilde;O' onclick='window.location.href=\"retribucionanual.html?id="+id+"&fecha="+valores[2]+"\"' />";
-					
+					cadena+="<input type='button' class='input_01' value='VER ACUMULADO A&Ntilde;O' onclick='window.location.href=\"retribucionanual.html?id="+id+"&fecha="+valores[2]+"\"' />";					
 					
 					cadena+="</div>";
 					
@@ -1642,7 +1638,7 @@ function ajax_recover_leco(operation, values, container, type) {
 							
 					cadena+="<div class='clear_03'> </div>";
 					
-					cadena+="<div class='datos_retribucion_04'>Retribuci&oacute;n mensual<br>total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
+					cadena+="<div class='datos_retribucion_04'>Retribuci&oacute;n mensual total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
 							
 					cadena+="<div class='clear_03'> </div>";
 							
@@ -1755,15 +1751,32 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeRo=parseFloat(data.ImporteRo).toFixed(2);
 					var importeRm=parseFloat(data.ImporteRm).toFixed(2);
 					
+					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
+					importeTotalSuma=importeTotalSuma.toFixed(2);
+					
+					cadena+="<div class='datos_retribucion_04'><span>Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+					
 					cadena+="<div style='text-align:center'><h2>A&Ntilde;O "+fecha_calendario[0]+"</div>";
 					
 					cadena+="<div class='clear_03'> </div>";
 					
-					cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh</span></div>";
-		
+					if(data.Perdidas!=null && data.Perdidas>0)
+					{
+						cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh<br>"+
+								"<span class='datos_retribucion_06'>(Aplicadas p&eacute;rdidas de transformaci&oacute;n)</span></span></div>";
+					}
+					else
+					{
+						cadena+="<div class='datos_retribucion_01'>PRODUCCI&Oacute;N <span>"+data.EnergiaMWh+" MWh</span></div>";
+					}
+						
 					cadena+="<div class='datos_retribucion_02'>Rinv<br><span class='rinv'>"+importeRinv+" &euro;</span></div>"+
 							"<div class='datos_retribucion_02'>Ro<br><span class='ro'>"+importeRo+" &euro;</span></div>"+
 							"<div class='datos_retribucion_02'>Rm<br><span class='rm'>"+importeRm+" &euro;</span></div>";	
+							
+					cadena+="<div class='clear_03'> </div>";
+					
+					cadena+="<div class='datos_retribucion_04'>Retribuci&oacute;n mensual total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
 							
 					cadena+="<div class='clear_03'> </div>";
 							
@@ -2187,6 +2200,10 @@ function ajax_recover_leco(operation, values, container, type) {
 		}
 		else if(jqXHR.status == 401) {
 			$("#"+container).html("No tiene autorizaci&oacute;n para ver esta secci&oacute;n. Si ha cambiado de contrase&ntilde;a recientemente, por favor cierre sesi&oacute;n y vuelva a conectarse con la nueva contrase&ntilde;a. Disculpe las molestias.");
+			return;
+		}
+		else if(jqXHR.status == 500) {
+			$("#"+container).html("Ha sucedido un error. Disculpe las molestias.");
 			return;
 		}
 		else

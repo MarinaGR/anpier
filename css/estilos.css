@@ -321,23 +321,23 @@ a.button_nav {
 .rinv
 {
 	border-left: 4px solid #97265F;
-	font-size:0.7em !important
+	font-size:0.65em !important
 }
 .ro
 {
 	border-left: 4px solid #3CBEBE;
-	font-size:0.7em !important
+	font-size:0.65em !important
 }
 .rm
 {
 	border-left: 4px solid #FFC23E;
-	font-size:0.7em !important
+	font-size:0.65em !important
 }
 .datos_retribucion_01
 {
 	color: #888;
 	font-size: 1.6em;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	text-align: center;
 }
 .datos_retribucion_02
@@ -367,6 +367,16 @@ a.button_nav {
 	margin-bottom: 20px;
 	text-align: center;
 }
+.datos_retribucion_01 span, .datos_retribucion_02 span, .datos_retribucion_03 span, .datos_retribucion_04 span{
+	color: #666;
+	font-size: 0.75em;
+	background: #eee;
+	padding: 5px 2px;
+	margin: 2px 0;
+	display: block;
+	word-wrap: break-word;
+	line-height: 1.75em;
+}
 .datos_retribucion_05
 {
 	color: #999;
@@ -375,18 +385,9 @@ a.button_nav {
 }
 .datos_retribucion_06
 {
-	color: #999;
+	color: #888;
 	font-size: 0.6em;
-	margin: 2px 0;
-}
-.datos_retribucion_01 span, .datos_retribucion_02 span, .datos_retribucion_03 span, .datos_retribucion_04 span{
-	color: #666;
-	font-size: 0.8em;
-	background: #eee;
-	padding: 5px 2px;
-	margin: 2px 0;
-	display: block;
-	word-wrap: break-word;
+	margin: 0;
 }
 
 .label_01 {
