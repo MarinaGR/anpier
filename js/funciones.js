@@ -1971,7 +1971,7 @@ function ajax_recover_leco(operation, values, container, type) {
 						$('#calendario').datepicker({
 											hideIfNoPrevNext: false,
 											showButtonPanel: false,
-											defaultDate:new Date(fecha_calendario[1]+"-"+(parseInt(fecha_calendario[2])+1)+"-"+fecha_calendario[0]),
+											defaultDate:new Date(fecha_calendario[1]+"-"+fecha_calendario[2]+"-"+fecha_calendario[0]),
 											onChangeMonthYear: function(year, month, widget) {
 															//reloadCalendar(month, year);
 														}
