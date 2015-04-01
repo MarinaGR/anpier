@@ -321,8 +321,8 @@ a.button_nav {
 .img_info {	
     width: 20px;
     vertical-align: bottom;
-    display: inline-block;
-    margin: 5px;
+    display: inline-block !important;
+	margin: 5px !important;
 }
 .rinv
 {
@@ -527,7 +527,7 @@ a.button_nav {
 
 .saludo_usuario
 {
-	color: #888;
+	color: #666;
 	font-size: 1.1em;
 	margin-bottom: 20px;
 	text-align: center;

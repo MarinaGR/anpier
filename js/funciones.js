@@ -52,12 +52,13 @@ function onDeviceReady()
 		document.getElementById("boton_salir").addEventListener("click", onBackKeyDown, false);	
 	}
 	
-	/* ************************************************************************ */
-	/* Comentar desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES  */
-	/* para no realizar el registro del dispositivo							    */
-	/* ************************************************************************ */
+	/* ****************************************************************************** */
+	/* Comentar (o no) desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES */
+	/* para realizar (o no) el registro del dispositivo					 			  */
+	/* ****************************************************************************** */
 	
 	// INICIO TEST NOTIFICACIONES	
+	/*
 	var current_url=window.location.href;
 	var opcion_notif=getLocalStorage("notificacion");
 	var first_exec=getSessionStorage("first_time");
@@ -72,6 +73,7 @@ function onDeviceReady()
 			}
 		}
 	}
+	*/
 	// FIN TEST NOTIFICACIONES	
 	
 	cordova.plugins.notification.local.on("click", function (notification, state) {
@@ -130,7 +132,7 @@ function register_notif()
 function unregister_notif()
 {
 	window.plugins.pushNotification.unregister(function() {
-	
+			//notificar al usuario con un mensaje
 			window.sessionStorage.clear();
 	});
 }
@@ -310,7 +312,9 @@ function registerOnServer(registrationId) {
 				},
         error: function(jqXHR) {
 					if(jqXHR.status == 200) {
-						$("body").append('<br>Listo para notificaciones');		
+						//$("body").append('<br>Listo para notificaciones');	
+
+						//notificar al usuario con un mensaje						
 						setSessionStorage("regID", registrationId);
 					}	
 					if(jqXHR.status == 500) {
@@ -321,7 +325,7 @@ function registerOnServer(registrationId) {
     });
 }
 function tokenHandler (result) {
-	$("body").append('<br>Listo para notificaciones');
+	//$("body").append('<br>Listo para notificaciones');
 	registerOnServer(result);
 }
 
@@ -330,8 +334,7 @@ function successHandler (result) {
 }
 
 function errorHandler (error) {
-	//$("body").append('Error: '+error);
-	alert(error);
+	$("body").append('Error: '+error);
 } 
 
 function onBackKeyDown()
@@ -397,64 +400,11 @@ function onMenuKeyDown()
 					'<div class="button_float_nav">'+
 						'<img src="./resources/images/general/llave.png" alt="salir" width="20" /> Cerrar sesi&oacute;n'+
 					'</div>'+
-				'</a>'
-				
-				/*QUITAR FORZAR NOTIF*/
-				+'<a href="#" onclick="forzar_envio_notificacion(\'testpush/\');">'+
-					'<div class="button_float_nav">'+
-						'FORZAR NOTIF PUSH'+
-					'</div>'+
-				'</a>'+				
-				'<a href="#" onclick="forzar_envio_notificacion(\'testpushalerta/\');">'+
-					'<div class="button_float_nav">'+
-						'FORZAR NOTIF PUSH ALERTA'+
-					'</div>'+
-				'</a>'
-				/*FIN QUITAR*/
-				
-				);
+				'</a>');
 				
 	$('#menu_flotante').toggle('drop'); 
 	$('#cortina').toggle();
 }
-
-/*QUITAR FORZAR NOTIF*/
-function forzar_envio_notificacion(tipo)
-{
-	//var regID="APA91bECvWY-y0PZO0I1P5HIUrEGu1M-wzStaKbl_esOabcq6P2WzoC7dnRTUuBHhyOL_fLT4yVRwBdIbLOF_sMUKw1xolORLiOZ02Fi7MMCEUHAuDOZvcZlWj7Fp6roxn3aTMfd6s-Ltl_BGzhtg6-lqKzeSoA4TQ";
-	
-	var regID=getSessionStorage("regID");
-	if(typeof regID == "undefined" || regID==null || regID=="")
-	{
-		alert("Notificaciones desactivadas");
-		return false;
-	}
-
-	var api_key=getLocalStorage("api-key");
-	var mail=getLocalStorage("user_session");
-	
-	$.ajax({
-	
-			  url: api_leco+tipo+regID,
-			  headers: {
-				'Authorization': 'Basic ' + utf8_to_b64(mail+":"+api_key),
-				'X-ApiKey':'d2a3771d-f2f3-4fc7-9f9f-8ad7697c81dc'
-			  },
-			  type: 'POST',
-			  dataType: 'json',
-			  crossDomain: true, 
-			  success: function exito(respuesta) {
-			  
-							console.log(respuesta);
-							
-					   },
-			  error: function fallo(jqXHR, textStatus, errorThrown) {
-						console.log(textStatus+" "+errorThrown);
-						return false;
-					 },
-			});
-}
-/*FIN QUITAR*/
 
 function onOutKeyDown()
 {
