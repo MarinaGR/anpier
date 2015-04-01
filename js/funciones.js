@@ -331,6 +331,7 @@ function successHandler (result) {
 
 function errorHandler (error) {
 	//$("body").append('Error: '+error);
+	alert(error);
 } 
 
 function onBackKeyDown()
@@ -1587,7 +1588,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
 					importeTotalSuma=importeTotalSuma.toFixed(2);
 					
-					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' class='img_info' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
 						
 					cadena+="<div style='text-align:center'>";
 					
@@ -1749,7 +1750,7 @@ function ajax_recover_leco(operation, values, container, type) {
 					var importeTotalSuma=parseFloat(importeRinv)+parseFloat(importeRo)+parseFloat(importeRm);
 					importeTotalSuma=importeTotalSuma.toFixed(2);
 					
-					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
+					cadena+="<div class='datos_retribucion_04'><span><img src='./resources/images/general/info.png' class='img_info' /> Datos en base a una facturaci&oacute;n ideal (sin tener en cuenta coeficiente de cobertura ni reliquidaciones)</span></div>";
 					
 					cadena+="<div style='text-align:center'><h2>A&Ntilde;O "+fecha_calendario[0]+"</div>";
 					
@@ -1771,7 +1772,7 @@ function ajax_recover_leco(operation, values, container, type) {
 							
 					cadena+="<div class='clear_03'> </div>";
 					
-					cadena+="<div class='datos_retribucion_04'>Retribuci&oacute;n mensual total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
+					cadena+="<div class='datos_retribucion_04'>Retribuci&oacute;n anual total a percibir<span>"+importeTotalSuma+" &euro;</span></div>";
 							
 					cadena+="<div class='clear_03'> </div>";
 							

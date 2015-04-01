@@ -29,6 +29,7 @@
 				{
 					opcion_notif="si";
 					setLocalStorage("notificacion",opcion_notif);
+					$("#notificaciones").val(opcion_notif);
 				}
 				switch(opcion_notif)
 				{
@@ -120,7 +121,7 @@
 																				
 							<h3>Notificaciones</h3>
 							<p class="switch">								
-								<label class="enable selected" onclick="activar_notif(this)"><span>Activadas</span></label>
+								<label class="enable" onclick="activar_notif(this)"><span>Activadas</span></label>
 								<label class="disable" onclick="desactivar_notif(this)"><span>Desactivadas</span></label>
 								<input type="checkbox" name="notificaciones" id="notificaciones" onchange="config_notifications('notificaciones')" style="display:none"/> 
 							</p>
