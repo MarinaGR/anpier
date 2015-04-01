@@ -52,13 +52,12 @@ function onDeviceReady()
 		document.getElementById("boton_salir").addEventListener("click", onBackKeyDown, false);	
 	}
 	
-	/* ****************************************************************************** */
-	/* Comentar (o no) desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES */
-	/* para realizar (o no) el registro del dispositivo					 			  */
-	/* ****************************************************************************** */
+	/* *********************************************************************** */
+	/* Comentar desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES */
+	/* para no realizar el registro del dispositivo	al inicio		 		   */
+	/* *********************************************************************** */
 	
 	// INICIO TEST NOTIFICACIONES	
-	/*
 	var current_url=window.location.href;
 	var opcion_notif=getLocalStorage("notificacion");
 	var first_exec=getSessionStorage("first_time");
@@ -73,7 +72,6 @@ function onDeviceReady()
 			}
 		}
 	}
-	*/
 	// FIN TEST NOTIFICACIONES	
 	
 	cordova.plugins.notification.local.on("click", function (notification, state) {
