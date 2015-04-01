@@ -525,6 +525,23 @@ a.button_nav {
 	background-color: #A31E61;
 }
 
+.saludo_usuario
+{
+	color: #888;
+	font-size: 1.1em;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.saludo_usuario span{
+	color: #666;
+	font-size: 0.9em;
+	background: #eee;
+	padding: 5px 2px;
+	margin: 2px 0;
+	display: block;
+	word-wrap: break-word;
+}
+
 .img_mantenedor
 {
 	position: relative;

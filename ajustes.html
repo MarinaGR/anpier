@@ -98,6 +98,13 @@
 			<div class="section_01">
 				
 				<div id="contenido">
+				
+					<div class="saludo_usuario"> </div>
+					<script>
+						if(getLocalStorage("user_session")!="") {				 
+							$("#saludo_usuario").html("USUARIO<span>"+getLocalStorage("user_session")+"</span>"); 
+						}
+					</script>
 					
 					<div class="div_table">
 						<div class="tabs active" onclick="show_tab(this,'notif')">
