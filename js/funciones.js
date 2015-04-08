@@ -357,9 +357,19 @@ function onMenuKeyDown()
 						'<img src="./resources/images/general/noticias.png" alt="noticias" width="20" /> Noticias'+
 					'</div>'+
 				'</a>'+
+				'<a href="prensa.html">'+
+					'<div class="button_float_nav">'+
+						'<img src="./resources/images/general/prensa.png" alt="prensa" width="20" /> Prensa'+
+					'</div>'+
+				'</a>'+
 				'<a href="guias.html">'+
 					'<div class="button_float_nav">'+
 						'<img src="./resources/images/general/guias.png" alt="contenidos" width="20" /> Contenidos'+
+					'</div>'+
+				'</a>'+
+				'<a href="varios.html">'+
+					'<div class="button_float_nav">'+
+						'<img src="./resources/images/general/varios.png" alt="utilidades" width="20" /> Utilidades'+
 					'</div>'+
 				'</a>'+
 				'<a href="circulares.html">'+
@@ -371,17 +381,7 @@ function onMenuKeyDown()
 					'<div class="button_float_nav">'+
 						'<img src="./resources/images/general/consultas.png" alt="consultas" width="20" /> Consultas'+
 					'</div>'+
-				'</a>'+
-				'<a href="prensa.html">'+
-					'<div class="button_float_nav">'+
-						'<img src="./resources/images/general/prensa.png" alt="prensa" width="20" /> Prensa'+
-					'</div>'+
-				'</a>'+
-				'<a href="varios.html">'+
-					'<div class="button_float_nav">'+
-						'<img src="./resources/images/general/varios.png" alt="utilidades" width="20" /> Utilidades'+
-					'</div>'+
-				'</a>'+
+				'</a>'+				
 				'<span id="premium_flot"> </span>'+
 				'<script>'+
 				'if(getLocalStorage("premium")==FLAG_PREMIUM || getLocalStorage("premium")==FLAG_PREMIUMPLUS) {'+
@@ -947,33 +947,50 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					
 					var url_web=extern_url+"comunicacion/noticias/post/titulo/"+data.url_web;
 					
-					cadena+="<h2>"+d.title+"</h2>";
+					var titulo=d.title;
+					titulo=titulo.replace(/"/g, ""); 
 					
-					cadena+="<div class='fecha_02'>"+fecha_formateada+"</div>";
-
 					var url_imagen="";
 					if(imagen!=null && imagen!="null" && imagen!="") 
 					{						
 						if(imagen.indexOf("http")<0)
 						{	
 							url_imagen=extern_url+"uploads/pics/"+imagen;
-							cadena+="<img src='"+url_imagen+"' alt='Imagen principal' />";
 						}
 						else
 						{
 							url_imagen=imagen;
-							cadena+="<img src='"+url_imagen+"' alt='Imagen principal' />";
-						}						
+						}
+						
+					}	
+					
+					cadena+="<h2>"+d.title+"</h2>";
+					
+					cadena+="<div class='fecha_02'>"+fecha_formateada;
+					
+					cadena+='<a class="vercompartir" id="compartir" onclick="window.plugins.socialsharing.share(\'Mensaje\', \''+titulo+'\', \''+url_imagen+'\', \''+url_web+'\')" href="#" ><img src="./resources/images/general/share_white.png" width="25" />Compartir</a>';
+					
+					cadena+="</div>";
+					
+					if(imagen!=null && imagen!="null" && imagen!="") 
+					{						
+						cadena+="<img src='"+url_imagen+"' alt='Imagen principal' />";
 					}				
 					
 					cadena+=d.bodytext;
-					
-					var titulo=d.title;
-					titulo=titulo.replace(/"/g, ""); 
-					
-					cadena+='<p><a class="vermas" id="compartir" onclick="window.plugins.socialsharing.share(\'Mensaje\', \''+titulo+'\', \''+url_imagen+'\', \''+url_web+'\')" href="#" ><img src="./resources/images/general/share_white.png" width="25" />Compartir</a></p>';
-					
+
 					$("#"+container).html(cadena);
+					
+					$("a").on("click", function(e) {
+						var url = $(this).attr('href');
+						var containsHttp = new RegExp('http\\b'); 
+						
+						if(containsHttp.test(url)) { 
+							e.preventDefault(); 
+							window.open(url, "_system", "location=yes"); // For iOS
+							//navigator.app.loadUrl(url, {openExternal: true}); //For Android
+						}
+					});	
 		
 					break;
 					
@@ -1119,8 +1136,28 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					}					
 										
 					$("#"+container).html(cadena);
-				
+					break;
 					
+			case "revista": 		
+		
+					var cadena="";
+			
+					var links=(data.result).split("<link");	
+					for(i=0; i<links.length; i++)
+					{	
+						if(links[i].length>0)
+						{
+							var split_link_space=links[i].split(/ /); 			
+							var split_link_symbol=links[i].split(/[><]/); 
+	
+							var url_pdf=extern_url+split_link_space[1];
+							var name_pdf=split_link_symbol[1];
+							
+							cadena+='<a class="verpdf" href="'+url_pdf+'"><img src="./resources/images/general/doc.png" />'+name_pdf+'</a><br>';
+						}
+					}					
+										
+					$("#"+container).html(cadena);
 					break;
 					
 			

@@ -21,13 +21,11 @@
 			if(typeof user_session == "undefined" || user_session==null || user_session=="")	
 				window.location.href='index.html';
 				
-			document.addEventListener("deviceready", function() 
-			{
-				var id=get_var_url("id");
-				var tipo=get_var_url("tipo");
-				ajax_recover_data(tipo, id, "contenido", false);
-			}, false);		
-
+			 document.addEventListener("deviceready", function() 
+			 {
+				ajax_recover_data("revista", "", "contenido", false);
+				
+			 }, false);
 		</script>
 		
 	</head>
@@ -48,8 +46,8 @@
 			</div>
 			
 			<div class="title_01">
-				<img src="./resources/images/general/guias.png" alt="guias" width="20" style="vertical-align: text-top;">
-				Contenidos
+				<img src="./resources/images/general/prensa.png" alt="prensa" width="20" style="vertical-align: text-top;">
+				Revista
 			</div>
 			
 			<div class="section_01">

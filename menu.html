@@ -48,10 +48,24 @@
 					</div>
 				</a>
 				
+				<a href="prensa.html">
+					<div class="button_nav">
+						<img src="./resources/images/general/prensa_menu.png" alt="prensa" width="50" />
+						<br />Prensa
+					</div>
+				</a>
+				
 				<a href="guias.html">
 					<div class="button_nav">
 						<img src="./resources/images/general/guias_menu.png" alt="contenidos" width="50" />
 						<br />Contenidos
+					</div>
+				</a>
+				
+				<a href="varios.html">
+					<div class="button_nav">
+						<img src="./resources/images/general/varios_menu.png" alt="utilidades" width="50" />
+						<br />Utilidades
 					</div>
 				</a>
 				
@@ -67,21 +81,7 @@
 						<img src="./resources/images/general/consultas_menu.png" alt="consultas" width="50" />
 						<br />Consultas
 					</div>
-				</a>
-				
-				<a href="prensa.html">
-					<div class="button_nav">
-						<img src="./resources/images/general/prensa_menu.png" alt="prensa" width="50" />
-						<br />Prensa
-					</div>
-				</a>
-				
-				<a href="varios.html">
-					<div class="button_nav">
-						<img src="./resources/images/general/varios_menu.png" alt="utilidades" width="50" />
-						<br />Utilidades
-					</div>
-				</a>
+				</a>				
 				
 				<div class="clear_01"> </div>
 				
@@ -91,10 +91,7 @@
 				if(getLocalStorage("premium")==FLAG_PREMIUM) 
 				{
 					$('#premium').html('<a href="instalaciones.html"><div class="button_nav premium"><img src="./resources/images/general/instalaciones_menu.png" alt="instalaciones" width="50" /><br />Instalaciones</div></a>');
-										
-					//$('#premium').append('<a href="#"><div class="button_nav premium">ESTIMACIÓN RETRIBUCIÓN MENSUAL</div></a>');
-					//$('#premium').append('<a href="#"><div class="button_nav premium">ALERTAS REVISIONES TÉCNICAS</div></a>');
-					
+
 					$('#premium').append('<a href="premiumplus.html"><div class="button_nav premiumplus">HAZTE PREMIUM+</div></a>');
 				}	
 				</script>
@@ -105,8 +102,6 @@
 				if(getLocalStorage("premium")==FLAG_PREMIUMPLUS) 
 				{
 					$('#premiumplus').html('<a href="instalaciones.html"><div class="button_nav premium"><img src="./resources/images/general/instalaciones_menu.png" alt="instalaciones" width="50" /><br />Instalaciones</div></a>');
-					
-					//$('#premiumplus').html('<a href="produccion_energetica.html"><div class="button_nav premium">PRODUCCIÓN ENERGÉTICA</div></a>');
 				}
 				if(getLocalStorage("premium")==FLAG_NORMAL) 
 				{
