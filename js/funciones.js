@@ -1076,8 +1076,12 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					}
 					else 
 					{
-						var fecha=new Date(data.date*1000);
-						var fecha_formateada=addZero(fecha.getDate())+"/"+addZero(fecha.getMonth()+1)+"/"+fecha.getFullYear();
+						var fecha_formateada="";
+						if(data.date!="")
+						{
+							var fecha=new Date(data.date*1000);
+							fecha_formateada=addZero(fecha.getDate())+"/"+addZero(fecha.getMonth()+1)+"/"+fecha.getFullYear();
+						}	
 							
 						cadena+="<h3>"+data.title+"</h3>";
 						cadena+="<div class='fecha_01'>"+fecha_formateada+"</div>";
@@ -1120,44 +1124,96 @@ function ajax_recover_data(operation, values, container, isLocal) {
 		
 					var cadena="";
 			
-					var links=(data.result).split("<link");	
-					for(i=0; i<links.length; i++)
-					{	
-						if(links[i].length>0)
-						{
-							var split_link_space=links[i].split(/ /); 			
-							var split_link_symbol=links[i].split(/[><]/); 
-	
-							var url_pdf=extern_url+split_link_space[1];
-							var name_pdf=split_link_symbol[1];
-							
-							cadena+='<a class="verpdf" href="'+url_pdf+'"><img src="./resources/images/general/doc.png" />'+name_pdf+'</a><br>';
-						}
-					}					
-										
+					$.each(data.result, function(i, enlaces) {
+						cadena+='<a class="verpdf" href="'+enlaces.url+'"><img src="./resources/images/general/doc.png" />'+enlaces.name+'</a><br>';
+					});
+								
 					$("#"+container).html(cadena);
+					
+					$("a").on("click", function(e) {
+						var url = $(this).attr('href');
+						var containsHttp = new RegExp('http\\b'); 
+						
+						if(containsHttp.test(url)) { 
+							e.preventDefault(); 
+							window.open(url, "_system", "location=yes"); // For iOS
+							//navigator.app.loadUrl(url, {openExternal: true}); //For Android
+						}
+					});	
+					
 					break;
 					
 			case "revista": 		
 		
 					var cadena="";
 			
-					var links=(data.result).split("<link");	
-					for(i=0; i<links.length; i++)
-					{	
-						if(links[i].length>0)
-						{
-							var split_link_space=links[i].split(/ /); 			
-							var split_link_symbol=links[i].split(/[><]/); 
-	
-							var url_pdf=extern_url+split_link_space[1];
-							var name_pdf=split_link_symbol[1];
+					if(data.status=="KO")
+					{
+						cadena+=data.error;
+					}
+					else 
+					{
+
+						$.each(data.result, function(index, d) {   
+						
+							cadena+="<h3>"+d.header+"</h3>";
 							
-							cadena+='<a class="verpdf" href="'+url_pdf+'"><img src="./resources/images/general/doc.png" />'+name_pdf+'</a><br>';
-						}
-					}					
-										
+							if(d.text!="")
+							{								
+								cadena+=d.bodytext;
+							}
+							var enlace=d.image_link;
+							var imagen=d.image;
+							var url_imagen="";
+							var url_enlace="";
+							
+							if(enlace!=null && enlace!="null" && enlace!="") 
+							{									
+								if(enlace.indexOf("http")<0)
+								{	
+									url_enlace=extern_url+enlace;									
+								}
+								else
+								{
+									url_enlace=enlace;
+								}
+							}
+								
+							if(imagen!=null && imagen!="null" && imagen!="") 
+							{						
+								if(imagen.indexOf("http")<0)
+								{	
+									url_imagen=extern_url+"uploads/pics/"+imagen;									
+								}
+								else
+								{
+									url_imagen=imagen;
+								}
+								
+								if(enlace!=null && enlace!="null" && enlace!="") 
+								{									
+									cadena+="<a href='"+url_enlace+"'><img src='"+url_imagen+"' alt='Imagen principal' style='width: 320px;display: inline-block;' /></a>";
+								}
+								else
+								{								
+									cadena+="<img src='"+url_imagen+"' alt='Imagen principal' style='width: 300px;display: inline-block;' />";
+								}
+								
+							}	
+							else
+							{
+								if(url_enlace!="")
+									cadena+="<a href='"+url_enlace+"'>"+url_enlace+"</a>";
+							}
+														
+							cadena+="<div class='clear_03'> </div>";
+															
+						});
+					
+					}
+					
 					$("#"+container).html(cadena);
+					
 					break;
 					
 			
@@ -1207,6 +1263,80 @@ function ajax_recover_data(operation, values, container, isLocal) {
 							cadena+="<div class='clear_01'> </div>";
 									
 						});
+					}
+					
+					$("#"+container).html(cadena);
+									
+					break;
+					
+			case "otros_contenidos":	
+					var cadena="";
+			
+					if(data.status=="KO")
+					{
+						cadena+=data.error;
+					}
+					else 
+					{
+
+						$.each(data.result, function(index, d) {   
+						
+							cadena+="<h3>"+d.header+"</h3>";
+							
+							if(d.text!="")
+							{								
+								cadena+=d.bodytext;
+							}
+							var enlace=d.image_link;
+							var imagen=d.image;
+							var url_imagen="";
+							var url_enlace="";
+							
+							if(enlace!=null && enlace!="null" && enlace!="") 
+							{									
+								if(enlace.indexOf("http")<0)
+								{	
+									url_enlace=extern_url+enlace;									
+								}
+								else
+								{
+									url_enlace=enlace;
+								}
+							}
+								
+							if(imagen!=null && imagen!="null" && imagen!="") 
+							{						
+								if(imagen.indexOf("http")<0)
+								{	
+									url_imagen=extern_url+"uploads/pics/"+imagen;									
+								}
+								else
+								{
+									url_imagen=imagen;
+								}
+								
+								if(enlace!=null && enlace!="null" && enlace!="") 
+								{									
+									cadena+="<a href='"+url_enlace+"'><img src='"+url_imagen+"' alt='Imagen principal' style='width: 320px;display: inline-block;' /></a>";
+								}
+								else
+								{								
+									cadena+="<img src='"+url_imagen+"' alt='Imagen principal' style='width: 320px;display: inline-block;' />";
+								}
+								
+							}	
+							else
+							{
+								if(url_enlace!="")
+									cadena+="<a href='"+url_enlace+"'>"+url_enlace+"</a>";
+							}
+														
+							cadena+="<div class='clear_02'> </div>";
+															
+						});
+						
+						cadena+="<div class='clear_02'> </div>";
+					
 					}
 					
 					$("#"+container).html(cadena);
