@@ -1,4 +1,5 @@
-var api_url='http://anpier.org/api.php';
+var api_url='http://hoopale.com/ANPIER_PRUEBAS/api.php';
+//var api_url='http://anpier.org/api.php';
 var api_leco='http://anpier.api.lecturacontador.com/api/';
 var extern_url='http://www.anpier.org/';
 var local_url='./resources/json/';
