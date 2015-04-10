@@ -38,7 +38,7 @@
 				//CARGA MAPA
 				setTimeout(function() {
 					show_weather();
-				}, 1500);
+				}, 25000);
 				
 			});
 			
@@ -147,6 +147,11 @@
 				$('#'+id).show();
 				$('.tabs').removeClass('active');
 				$(tab).addClass('active');
+				
+				if(id=="horariosol")
+				{
+					show_weather();
+				}
 			}
 			
 			function onBackKeyDown()
@@ -213,7 +218,7 @@
 				<div class="iframes" id="demanda" style="width:100%;height:500px" >
 				</div>
 					
-				<div class="iframes" id="horariosol" style="width:100%;height:500px" >						
+				<div class="iframes" id="horariosol" style="min-width:250px;width:100%;height:500px;background: url(./resources/images/general/loading.gif) no-repeat center;" >						
 				</div>
 
 				<div class="clear_01"> </div>
