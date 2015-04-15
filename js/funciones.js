@@ -1209,6 +1209,12 @@ function ajax_recover_data(operation, values, container, isLocal) {
 							cadena+="<div class='clear_03'> </div>";
 															
 						});
+						
+						if(data.startPrev!=null)
+							cadena+="<a class='verpagina' href='revista.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+						
+						if(data.startNext!=null)
+							cadena+="<a class='verpagina' href='revista.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
 					
 					}
 					
@@ -1263,7 +1269,13 @@ function ajax_recover_data(operation, values, container, isLocal) {
 							cadena+="<div class='clear_01'> </div>";
 									
 						});
-					}
+						
+						if(data.startPrev!=null)
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+						
+						if(data.startNext!=null)
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
+						}
 					
 					$("#"+container).html(cadena);
 									
@@ -1336,6 +1348,12 @@ function ajax_recover_data(operation, values, container, isLocal) {
 						});
 						
 						cadena+="<div class='clear_02'> </div>";
+						
+						if(data.startPrev!=null)
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+						
+						if(data.startNext!=null)
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
 					
 					}
 					
@@ -2312,6 +2330,17 @@ function ajax_recover_leco(operation, values, container, type) {
 		}
 		else if(jqXHR.status == 401) {
 			$("#"+container).html("No tiene autorizaci&oacute;n para ver esta secci&oacute;n. Si ha cambiado de contrase&ntilde;a recientemente, por favor cierre sesi&oacute;n y vuelva a conectarse con la nueva contrase&ntilde;a. Disculpe las molestias.");
+			
+			setLocalStorage("user_session","");
+			setLocalStorage("premium","");
+			setLocalStorage("notificacion","");
+			setLocalStorage("api-key","");
+			setLocalStorage("Instalacion","");
+			
+			window.localStorage.clear();
+			
+			window.location.href='index.html';
+			
 			return;
 		}
 		else if(jqXHR.status == 500) {
