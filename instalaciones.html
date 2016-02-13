@@ -22,9 +22,20 @@
 			var user_session=getLocalStorage("user_session"); 
 			if(typeof user_session == "undefined" || user_session==null || user_session=="")	
 				window.location.href='index.html';
-				
+			
 			document.addEventListener("deviceready", function()   {
-				ajax_recover_leco("instalacion", "", "contenido", "", false);			
+				ajax_recover_leco("instalacion", "", "contenido", "", false);	
+				if(getSessionStorage("muestra_anuncio_demo")=='true' && getLocalStorage("premium")==FLAG_NORMAL)
+				{
+					$("#title_anuncio_demo").html(getSessionStorage("title_anuncio_demo"));
+					$("#body_anuncio_demo").html(getSessionStorage("body_anuncio_demo"));
+					
+					$("#boton_anuncio_demo").html('<div class="vermas" onclick="window.open(\''+getSessionStorage("url_boton_anuncio")+'\',  \'_system\', \'location=yes\')">'+getSessionStorage("txt_boton_anuncio")+'</div>');
+				
+					$("#pie_instalaciones").html(getSessionStorage("pie_instalaciones"));
+					$("#anuncio").show('fade');
+				}
+				
 			}, false);
 			
 			function onBackKeyDown()
@@ -46,8 +57,8 @@
 			
 			<div class="header_01">
 				<img src="./resources/images/general/anpier_circulo.png" alt="anpier" width="60" style="vertical-align: middle" /> anpier
-				<div id="boton_salir"></div>
 				<div id="boton_menu"></div>
+				<div id="boton_salir"></div>
 			</div>
 			
 			<div class="title_01">
@@ -55,11 +66,24 @@
 				Premium - Instalaciones
 			</div>
 			
-			<div class="section_01">
+			<div class="section_01" id="anuncio" style="display:none">
+			
+				<h2 id="title_anuncio_demo"></h2>
+				<div id="title_anuncio_demo"></div>
+				<div id="body_anuncio_demo"></div>
+				<div class="clear_02"> </div>
+				<div id="boton_anuncio_demo"></div>
+			</div>
+			
+			<div class="section_01">			
 			
 				<div id="contenido" class="article_01">
 					<p style="text-align: center"><img src="./resources/images/general/loading.gif"></p>
 				</div>
+				
+				<div class="clear_03"> </div>
+				
+				<div id="pie_instalaciones"></div>
 				
 				<div class="clear_03"> </div>
 

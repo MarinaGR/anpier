@@ -24,7 +24,11 @@
 			 document.addEventListener("deviceready", function() 
 			 {
 				var id=get_var_url("id");
-				ajax_recover_data("tipos_circulares", id, "contenido", false);
+				
+				var start=get_var_url("start");
+				var limit=get_var_url("limit");
+				
+				ajax_recover_data("tipos_circulares", id+"&start="+start+"&limit="+limit, "contenido", false);
 			
 			 }, false);
 			 
@@ -47,8 +51,8 @@
 			
 			<div class="header_01">
 				<img src="./resources/images/general/anpier_circulo.png" alt="anpier" width="60" style="vertical-align: middle" /> anpier
-				<div id="boton_salir"></div>
 				<div id="boton_menu"></div>
+				<div id="boton_salir"></div>
 			</div>
 			
 			<div class="title_01">

@@ -1,4 +1,5 @@
-var api_url='http://anpier.org/api.php';
+//var api_url='http://anpier.org/api.php';
+var api_url='http://anpier.org/API/api.php';
 var api_leco='http://anpier.api.lecturacontador.com/api/';
 var extern_url='http://www.anpier.org/';
 var local_url='./resources/json/';
@@ -24,7 +25,10 @@ var FLAG_PREMIUMPLUS=2;
 function onBodyLoad()
 {	
     document.addEventListener("deviceready", onDeviceReady, false);
-	document.getElementById("boton_salir").addEventListener("click", onOutKeyDown, false);	
+	
+	var boton_salir=document.getElementById("boton_salir");
+	if(boton_salir!=null)
+		boton_salir.addEventListener("click", onOutKeyDown, false);	
 	
 	var boton_menu=document.getElementById("boton_menu");
 	if(boton_menu!=null)
@@ -45,12 +49,6 @@ function onDeviceReady()
 
 	document.addEventListener("backbutton", onBackKeyDown, false);
 	document.addEventListener("menubutton", onMenuKeyDown, false);
-	
-	if(device.platform!='android' && device.platform!='Android') 
-	{
-		$("#boton_salir").css("background", "url(./resources/images/general/atras.png) no-repeat center");
-		document.getElementById("boton_salir").addEventListener("click", onBackKeyDown, false);	
-	}
 	
 	/* *********************************************************************** */
 	/* Comentar desde INICIO TEST NOTIFICACIONES hasta FIN TEST NOTIFICACIONES */
@@ -322,9 +320,41 @@ function registerOnServer(registrationId) {
 		
     });
 }
+
+function registerOnServerIOS(registrationId) {
+
+	var api_key=getLocalStorage("api-key");
+	var mail=getLocalStorage("user_session");
+
+    $.ajax({
+        type: "POST",
+        url: api_leco+"pushios/"+registrationId, 
+		headers: {
+				'Authorization': 'Basic ' + utf8_to_b64(mail+":"+api_key),
+				'X-ApiKey':'d2a3771d-f2f3-4fc7-9f9f-8ad7697c81dc'
+			},
+		dataType: 'json',
+		crossDomain: true, 
+        success: function() {          	
+					setSessionStorage("regID", registrationId);					
+				},
+        error: function(jqXHR) {
+					if(jqXHR.status == 200) {
+						//$("body").append('<br>Listo para notificaciones');	
+
+						//notificar al usuario con un mensaje						
+						setSessionStorage("regID", registrationId);
+					}	
+					if(jqXHR.status == 500) {
+						$("body").append('<br>El dispositivo no se pudo registrar para recibir notificaciones.');
+					}	
+				}
+		
+    });
+}
 function tokenHandler (result) {
 	//$("body").append('<br>Listo para notificaciones');
-	registerOnServer(result);
+	registerOnServerIOS(result);
 }
 
 function successHandler (result) {
@@ -710,8 +740,9 @@ function start_user_session(id_form) {
 								setLocalStorage("premium", FLAG_PREMIUMPLUS);
 							if(respuesta.Premium==false && respuesta.PremiumPlus==false)
 								setLocalStorage("premium", FLAG_NORMAL);
-								
-							window.location.href='menu.html';
+							
+							get_user_data(mail, respuesta.Token);							
+							//window.location.href='menu.html';
 							
 					   },
 			  error: function fallo(jqXHR, textStatus, errorThrown) {
@@ -737,6 +768,59 @@ function start_user_session(id_form) {
 		$("#loading").hide();
 		
 	});
+}
+
+
+function get_user_data(mail, api_key) {
+					
+	$.ajax({
+		  url: api_leco+"inicio",
+		  headers: {
+			'Authorization': 'Basic ' + utf8_to_b64(mail+":"+api_key),
+			'X-ApiKey':'d2a3771d-f2f3-4fc7-9f9f-8ad7697c81dc'
+		  },
+		  type: 'GET',
+		  dataType: 'json',
+		  crossDomain: true, 
+		  success: function exito2(respuesta2) {
+						
+						var boton_demo=respuesta2.botonDemo; 
+						var muestra_boton_demo=boton_demo.mostrar;
+						setSessionStorage("muestra_boton_demo", muestra_boton_demo);
+						var txt_boton_demo=boton_demo.texto;
+						setSessionStorage("txt_boton_demo", txt_boton_demo);
+						
+						setSessionStorage("pie_instalaciones", respuesta2.pieInstalaciones);
+						
+						var anuncio_demo=respuesta2.anuncio; 
+						var muestra_anuncio_demo=anuncio_demo.mostrar;
+						setSessionStorage("muestra_anuncio_demo", muestra_anuncio_demo);
+						var title_anuncio_demo=anuncio_demo.titulo;
+						setSessionStorage("title_anuncio_demo", title_anuncio_demo);
+						var body_anuncio_demo=anuncio_demo.cuerpo;
+						setSessionStorage("body_anuncio_demo", body_anuncio_demo);
+						var txt_boton_anuncio=anuncio_demo.textoBoton;
+						setSessionStorage("txt_boton_anuncio", txt_boton_anuncio);
+						var url_boton_anuncio=anuncio_demo.urlBoton;
+						setSessionStorage("url_boton_anuncio", url_boton_anuncio);
+
+						if(respuesta2.Premium==true)
+							setLocalStorage("premium", FLAG_PREMIUM);
+						if(respuesta2.PremiumPlus==true)
+							setLocalStorage("premium", FLAG_PREMIUMPLUS);
+						if(respuesta2.Premium==false && respuesta2.PremiumPlus==false)
+							setLocalStorage("premium", FLAG_NORMAL);
+													
+						window.location.href='menu.html';
+						
+				   },
+		  error: function fallo2(jqXHR, textStatus, errorThrown) {
+					$("#loading2").hide();
+					$(".section_01").show();
+					return false;
+				 },
+		  async:false,
+		});
 }
 
 function send_query(id_form) {
@@ -926,10 +1010,10 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					});
 					
 					if(data.startPrev!=null)
-						cadena+="<a class='verpagina' href='noticias.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+						cadena+="<a class='verpagina' href='noticias.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior' />Anterior</a>";
 					
 					if(data.startNext!=null)
-						cadena+="<a class='verpagina' href='noticias.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
+						cadena+="<a class='verpagina' href='noticias.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente' /></a>";
 					
 					$("#"+container).html(cadena);
 									
@@ -1022,13 +1106,31 @@ function ajax_recover_data(operation, values, container, isLocal) {
 						$("#"+container).html(cadena);
 						
 						if(values!="")
-							$('#select_circulares').val(values);
+						{
+							var variable="id";
+							var id_tipo_circular="";
+							var direccion=values;
+							var posicion=direccion.indexOf("?");
+							
+							posicion=direccion.indexOf(variable,posicion) + variable.length; 
+							
+							if (direccion.charAt(posicion)== "=")
+							{ 
+								var fin=direccion.indexOf("&",posicion); 
+								if(fin==-1)
+									fin=direccion.length;
+									
+								id_tipo_circular=direccion.substring(posicion+1, fin); 
+							} 
+							
+							$('#select_circulares').val(id_tipo_circular);
+						}
 						
 						$('#select_circulares').on('change',function(){
 							//window.location.href='circulares.html?id='+$("#select_circulares").val();
-							ajax_recover_data("circulares", $("#select_circulares").val(), "contenido2", false);
+							ajax_recover_data("circulares", $("#select_circulares").val()+"&start=&limit=", "contenido2", false);
 						});
-
+						
 						ajax_recover_data("circulares", values, "contenido2", false);
 					}
 				
@@ -1060,6 +1162,29 @@ function ajax_recover_data(operation, values, container, isLocal) {
 							cadena+="<div class='clear_01'> </div>";
 									
 						});
+						
+						var variable="id";
+						var id_tipo_circular="";
+						var direccion=values;
+						var posicion=direccion.indexOf("?");
+						
+						posicion=direccion.indexOf(variable,posicion) + variable.length; 
+						
+						if (direccion.charAt(posicion)== "=")
+						{ 
+							var fin=direccion.indexOf("&",posicion); 
+							if(fin==-1)
+								fin=direccion.length;
+								
+							id_tipo_circular=direccion.substring(posicion+1, fin); 
+						} 
+							
+						if(data.startPrev!=null)
+							cadena+="<a class='verpagina' href='circulares.html?id="+id_tipo_circular+"&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior'  />Anterior</a>";
+						
+						if(data.startNext!=null)
+							cadena+="<a class='verpagina' href='circulares.html?id="+id_tipo_circular+"&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente'  /></a>";
+					
 					}
 					
 					$("#"+container).html(cadena);
@@ -1127,6 +1252,12 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					$.each(data.result, function(i, enlaces) {
 						cadena+='<a class="verpdf" href="'+enlaces.url+'"><img src="./resources/images/general/doc.png" />'+enlaces.name+'</a><br>';
 					});
+					
+					if(data.startPrev!=null)
+						cadena+="<a class='verpagina' href='resumenprensa.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior'  />Anterior</a>";
+					
+					if(data.startNext!=null)
+						cadena+="<a class='verpagina' href='resumenprensa.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente' /></a>";
 								
 					$("#"+container).html(cadena);
 					
@@ -1211,10 +1342,10 @@ function ajax_recover_data(operation, values, container, isLocal) {
 						});
 						
 						if(data.startPrev!=null)
-							cadena+="<a class='verpagina' href='revista.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+							cadena+="<a class='verpagina' href='revista.html?start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior' />Anterior</a>";
 						
 						if(data.startNext!=null)
-							cadena+="<a class='verpagina' href='revista.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
+							cadena+="<a class='verpagina' href='revista.html?start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente' /></a>";
 					
 					}
 					
@@ -1271,11 +1402,11 @@ function ajax_recover_data(operation, values, container, isLocal) {
 						});
 						
 						if(data.startPrev!=null)
-							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior' />Anterior</a>";
 						
 						if(data.startNext!=null)
-							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
-						}
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=audiovisual&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente' /></a>";
+					}
 					
 					$("#"+container).html(cadena);
 									
@@ -1329,7 +1460,7 @@ function ajax_recover_data(operation, values, container, isLocal) {
 								
 								if(enlace!=null && enlace!="null" && enlace!="") 
 								{									
-									cadena+="<a href='"+url_enlace+"'><img src='"+url_imagen+"' alt='Imagen principal' style='width: 320px;display: inline-block;' /></a>";
+									cadena+="<img onclick='window.open(\""+url_enlace+"\", \"_system\", \"location=yes\")' src='"+url_imagen+"' alt='Imagen principal' style='width: 320px;display: inline-block;' /></a>";
 								}
 								else
 								{								
@@ -1340,7 +1471,7 @@ function ajax_recover_data(operation, values, container, isLocal) {
 							else
 							{
 								if(url_enlace!="")
-									cadena+="<a href='"+url_enlace+"'>"+url_enlace+"</a>";
+									cadena+="<a href='#' onclick='window.open(\""+url_enlace+"\", \"_system\", \"location=yes\")' >"+url_enlace+"</a>";
 							}
 														
 							cadena+="<div class='clear_02'> </div>";
@@ -1350,10 +1481,10 @@ function ajax_recover_data(operation, values, container, isLocal) {
 						cadena+="<div class='clear_02'> </div>";
 						
 						if(data.startPrev!=null)
-							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' style='vertical-align: bottom;margin-right: 5px;' />Anterior</a>";
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startPrev+"&limit="+data.limit+"' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='10' class='anterior' />Anterior</a>";
 						
 						if(data.startNext!=null)
-							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' style='vertical-align: bottom;margin-left: 5px;' /></a>";
+							cadena+="<a class='verpagina' href='contenidos.html?tipo=otros_contenidos&start="+data.startNext+"&limit="+data.limit+"' style='float:right'>Siguiente<img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='10' class='siguiente' /></a>";
 					
 					}
 					
@@ -2104,7 +2235,8 @@ function ajax_recover_leco(operation, values, container, type) {
 						$('#calendario').datepicker({
 											hideIfNoPrevNext: false,
 											showButtonPanel: false,
-											defaultDate:new Date(fecha_calendario[1]+"-"+fecha_calendario[2]+"-"+fecha_calendario[0]),
+											defaultDate:new Date(fecha_calendario[0], fecha_calendario[1]-1, fecha_calendario[2], 0,0,0,0),
+											//defaultDate:new Date(fecha_calendario[1]+"-"+fecha_calendario[2]+"-"+fecha_calendario[0]),
 											onChangeMonthYear: function(year, month, widget) {
 															//reloadCalendar(month, year);
 														}
@@ -2246,12 +2378,23 @@ function ajax_recover_leco(operation, values, container, type) {
 							cadena+="<div class='clear_01'> </div>";
 							
 							cadena+='<div style="position:relative"><br>';
-							cadena+="<h3 style='text-align:center;'>"+fecha_calendario[2]+" de "+monthNames[parseInt(fecha_calendario[1])-1]+" de "+fecha_calendario[0]+"</h3>";
+							cadena+="<h3 style='text-align:center;'>"+fecha_calendario[2]+" de "+monthNames[parseInt(fecha_calendario[1])-1]+" de "+fecha_calendario[0]+"</h3>"; 
 							
-							cadena+="<div class='contenedor_flechas'><br>"+
-									"<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])-1)+"&tipo=dia' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='18' /></a>"+
-									"<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])+1)+"&tipo=dia' style='float:right'><img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='18' /></a><div class='clear_01'> </div></div>";
+							//Si es el primer día ocultamos fecha de día anterior
+							//Si es el último día del mes oculta la fecha de día siguiente
+							//cadena+="<div class='contenedor_flechas'><br>"+
+							//		"<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])-1)+"&tipo=dia' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='18' /></a>"+
+							//		"<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])+1)+"&tipo=dia' style='float:right'><img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='18' /></a><div class='clear_01'> </div></div>";
+									
+							cadena+="<div class='contenedor_flechas'><br>";
+							if(fecha_calendario[2]>1)
+								cadena+="<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])-1)+"&tipo=dia' style='float:left'><img src='./resources/images/general/arrow_left.png' alt='Anterior' width='18' /></a>";
 							
+							if(fecha_calendario[2]<getLastDay(parseInt(fecha_calendario[1]),fecha_calendario[0]))
+								cadena+="<a href='lecturas.html?id="+id_instalacion+"&fecha="+fecha_calendario[0]+"-"+addZero(parseInt(fecha_calendario[1]))+"-"+addZero(parseInt(fecha_calendario[2])+1)+"&tipo=dia' style='float:right'><img src='./resources/images/general/arrow_right.png' alt='Siguiente' width='18' /></a>";
+							
+							cadena+="<div class='clear_01'> </div></div>";			
+														
 							cadena+='<div class="clear_02"> </div>';
 							
 							cadena+='</div>';
@@ -2362,6 +2505,34 @@ function addZero(number) {
 		number="0"+number;
 	}
 	return number;
+}
+
+function getLastDay(month,year)
+{
+	switch(month)
+	{
+		case 1:
+		case 3:
+		case 5: 
+		case 7:
+		case 8:
+		case 10:
+		case 12: return 31;
+				 break;
+			
+		case 4:
+		case 6: 
+		case 9:
+		case 11: return 30;
+				 break;
+				 
+		case 2: if((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0))
+					return 29;
+				else
+					return 28;
+				break;
+		
+	}
 }
 
 function get_var_url(variable){
