@@ -304,11 +304,16 @@ function registerOnServer(registrationId) {
 		dataType: 'json',
 		crossDomain: true, 
         success: function() {          	
-					setSessionStorage("regID", registrationId);					
+					setSessionStorage("regID", registrationId);	
+
+					$("body").append('<br>'+registrationId);	
+					
 				},
         error: function(jqXHR) {
 					if(jqXHR.status == 200) {
 						//$("body").append('<br>Listo para notificaciones');	
+						
+						$("body").append('<br>'+registrationId);	
 
 						//notificar al usuario con un mensaje						
 						setSessionStorage("regID", registrationId);
@@ -451,9 +456,7 @@ function onOffline()
 function check_internet(){
 
 	var isOffline = 'onLine' in navigator && !navigator.onLine;
-	
-	$("body").prepend(navigator.onLine);
-	
+
 	if(!isOffline) 
 	{					
 		online=true;		
@@ -1054,7 +1057,7 @@ function ajax_recover_data(operation, values, container, isLocal) {
 					
 					cadena+="<div class='fecha_02'>"+fecha_formateada;
 					
-					cadena+='<a class="vercompartir" id="compartir" onclick="window.plugins.socialsharing.share(\'Mensaje\', \''+titulo+'\', \''+url_imagen+'\', \''+url_web+'\')" href="#" ><img src="./resources/images/general/share_white.png" width="25" />Compartir</a>';
+					cadena+='<a class="vercompartir" id="compartir" onclick="window.plugins.socialsharing.share(\''+titulo+'\', \''+titulo+'\', \''+url_imagen+'\', \''+url_web+'\')" href="#" ><img src="./resources/images/general/share_white.png" width="25" />Compartir</a>';
 					
 					cadena+="</div>";
 					
