@@ -304,19 +304,12 @@ function registerOnServer(registrationId) {
 		dataType: 'json',
 		crossDomain: true, 
         success: function() {          	
-					setSessionStorage("regID", registrationId);	
-
-					$("body").append('<br>'+registrationId+'<br>');	
-					$("body").append('<br>'+utf8_to_b64(mail+":"+api_key)+'<br>');	
-					
+					setSessionStorage("regID", registrationId);						
 				},
         error: function(jqXHR) {
 					if(jqXHR.status == 200) {
 						//$("body").append('<br>Listo para notificaciones');	
 						
-						$("body").append('<br>'+registrationId+'<br>');	
-						$("body").append('<br>'+utf8_to_b64(mail+":"+api_key)+'<br>');	
-
 						//notificar al usuario con un mensaje						
 						setSessionStorage("regID", registrationId);
 					}	
