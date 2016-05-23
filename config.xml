@@ -2,7 +2,7 @@
 <widget xmlns = "http://www.w3.org/ns/widgets"
 		xmlns:gap   = "http://phonegap.com/ns/1.0"
 		id          = "com.ziddea.anpier"
-		version     = "1.0.1" >
+		version     = "1.0.2" >
 		
 		<!-- 
 		v1.0.1: Corrección de bugs.
@@ -10,6 +10,10 @@
 		· Ocultar información barra sistema ios
 		· Cambio iconos barra menú superior 
 		· Paginador en todas las secciones de contenidos
+		
+		v1.0.2: Cambio de versión a cli-6
+		· Ocultar dos cuadros (resumen de prensa y boletines audiovisuales) de forma temporal
+		· Actualización de plugins
 		-->
 
     <name>ANPIER</name>
@@ -29,7 +33,7 @@
 	<!-- Fin habilitar permisos -->
 	
     <!-- Personalización -->
-    <preference name="phonegap-version"           value="3.7.0" />          <!-- all: current version of PhoneGap -->
+    <preference name="phonegap-version"           value="cli-6.0.0" />      <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="false" />          <!-- all: hides the status bar at the top of the screen -->
@@ -39,14 +43,16 @@
     <preference name="exit-on-suspend"            value="false" />          <!-- ios: if set to true, app will terminate when home button is pressed -->
     <preference name="auto-hide-splash-screen"    value="true" />           <!-- ios: if set to false, the splash screen must be hidden using a JavaScript API -->
     <preference name="disable-cursor"             value="false" />          <!-- blackberry: prevents a mouse-icon/cursor from being displayed on the app -->
-    <preference name="android-minSdkVersion"      value="14" />             <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
+    <preference name="android-minSdkVersion"      value="15" />             <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
     <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
-
+	<preference name="android-build-tool" value="gradle" /> 
+	
     <!-- Plugins -->
 	<!--
 	<gap:plugin name="org.apache.cordova.device-motion" version="0.2.10" />
 	<gap:plugin name="org.apache.cordova.device-orientation" version="0.3.9" />
 	-->
+	<!--
 	<gap:plugin name="org.apache.cordova.device" version="0.2.12" /> 
 	<gap:plugin name="org.apache.cordova.media" version="0.2.13" />
 	<gap:plugin name="org.apache.cordova.dialogs" version="0.2.10" />
@@ -55,6 +61,16 @@
 	<gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
 	<gap:plugin name="nl.x-services.plugins.socialsharing" version="4.3.8" />
 	<gap:plugin name="com.phonegap.plugins.pushplugin" version="2.4.0" />
+	-->
+	<gap:plugin name="cordova-plugin-device" source="npm" version="1.1.2" />
+	<gap:plugin name="cordova-plugin-media" source="npm" version="2.3.0" />
+	<gap:plugin name="cordova-plugin-dialogs" source="npm" version="1.2.1" />
+	<gap:plugin name="cordova-plugin-network-information" source="npm" version="1.2.1" />
+	<gap:plugin name="de.appplant.cordova.plugin.local-notification" source="npm" version="0.8.4" />
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.4.0" />
+	<gap:plugin name="cordova-plugin-socialsharing" source="npm" spec="4.3.81" />
+	<gap:plugin name="cordova-plugin-pushplugin" source="npm" version="2.6.1" />
+	<gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
 	
 	<!-- Ocultar barra ios, a partir de ios7-->
 	<gap:plugin name="de.appplant.cordova.plugin.hidden-statusbar-overlay" version="1.1.0" />
@@ -64,8 +80,6 @@
 	<gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance">
 		<false/>
 	</gap:config-file>
-
-
 
     <!-- Iconos para cada plataforma -->
     <icon src="res/icon/icon.png" />
@@ -97,6 +111,8 @@
 	<gap:splash src="res/screen/ios/Default-568h@2x.png" 		   gap:platform="ios"     width="640" height="1136"/>
 
     <!-- Acceso a dominios externos -->    
-    <access origin="*"/> 
+	<allow-intent href="*" />
+	<allow-navigation href="*" /> 
+	<access origin="*"/> 
 
 </widget>

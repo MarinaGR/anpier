@@ -452,6 +452,8 @@ function check_internet(){
 
 	var isOffline = 'onLine' in navigator && !navigator.onLine;
 	
+	$("body").prepend(navigator.onLine);
+	
 	if(!isOffline) 
 	{					
 		online=true;		
