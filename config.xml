@@ -2,7 +2,7 @@
 <widget xmlns = "http://www.w3.org/ns/widgets"
 		xmlns:gap   = "http://phonegap.com/ns/1.0"
 		id          = "com.ziddea.anpier"
-		version     = "1.0.2" >
+		version     = "1.0.3" >
 		
 		<!-- 
 		v1.0.1: Corrección de bugs.
@@ -14,6 +14,11 @@
 		v1.0.2: Cambio de versión a cli-6
 		· Ocultar dos cuadros (resumen de prensa y boletines audiovisuales) de forma temporal
 		· Actualización de plugins
+		
+		v1.0.3: Ocultar premium y relacionado
+		· Quitar el login en el acceso a la app
+		· Ocultar acceso a las instalaciones
+		· En los ajustes quitar usuario y contraseña
 		-->
 
     <name>ANPIER</name>
